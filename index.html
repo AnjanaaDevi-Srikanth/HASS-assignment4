@@ -41,11 +41,10 @@ svg.append("g")
     .enter()
     .append("path")
     .attr("d", geopath)
-    .attr("fill", "black")
     // set the color of each country
     .attr("fill", function (d) {
         d.total = data.get(d.id) || 0;
-        return colorScale(d.total);
+        return colorScale(d.total)
     });
 })
 
