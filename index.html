@@ -26,6 +26,12 @@ var projection = d3.geoMercator()
     .center([103.851959, 1.290270])
     .fitExtent([[20, 20], [980, 580]], data[0]);
 
+// Data and color scale
+var data = d3.map();
+var colorScale = d3.scaleThreshold()
+  .domain([0, 130000])
+  .range(d3.schemeBlues[7]);
+
 let geopath = d3.geoPath().projection(projection);
 
 svg.append("g")
@@ -35,7 +41,12 @@ svg.append("g")
     .enter()
     .append("path")
     .attr("d", geopath)
-    .attr("fill", "black");
+    .attr("fill", "black")
+    // set the color of each country
+    .attr("fill", function (d) {
+        d.total = data.get(d.id) || 0;
+        return colorScale(d.total);
+    });
 })
 
 </script>
