@@ -20,18 +20,8 @@
     background-color: lightgray;
      }
     .tooltip {                                                        
-        background: #eee;                                               
-        box-shadow: 0 0 5px #999999;                                    
-        color: #333;                                                   
-        display: none;                                                 
-        font-size: 12px;                                                
-        left: 130px;                                                    
-        padding: 10px;                                                  
-        position: absolute;                                             
-        text-align: center;                                             
-        top: 95px;                                                      
-        width: 80px;                                                    
-        z-index: 10;                                                    
+        position: absolute;
+       background: grey;                                                   
       }              
      #legend {
         position: fixed;
@@ -48,6 +38,35 @@
 <h1>Singapore Population 2021</h1>
 
 <svg></svg>
+
+<div class="tooltip"></div>
+
+<div id="legend">
+    <svg width="320" height="50">
+        <g id="legendRect">
+            <rect x="0" y="18" width="29" height="10" fill="#f7fbff"></rect>
+            <rect x="29" y="18" width="29" height="10" fill="#deebf7"></rect>
+            <rect x="58" y="18" width="29" height="10" fill="#c6dbef"></rect>
+            <rect x="87" y="18" width="29" height="10" fill="#9ecae1"></rect>
+            <rect x="116" y="18" width="28" height="10" fill="#6baed6"></rect>
+            <rect x="144" y="18" width="29" height="10" fill="#4292c6"></rect>
+            <rect x="173" y="18" width="29" height="10" fill="#2171b5"></rect>
+            <rect x="202" y="18" width="29" height="10" fill="#08519c"></rect>
+            <rect x="231" y="18" width="29" height="10" fill="#08306b"></rect>
+            <rect x="260" y="18" width="29" height="10" fill="#08306b"></rect>
+        </g>
+            <g transform="translate(0,28)" fill="none" font-size="8" font-family="sans-serif" text-anchor="middle">
+            <g class="tick" opacity="1" transform="translate(29.5,0)"><line stroke="currentColor" y2="6" y1="-10"></line><text fill="currentColor" y="9" dy="0.71em">13000</text></g>
+            <g class="tick" opacity="1" transform="translate(58.5,0)"><line stroke="currentColor" y2="6" y1="-10"></line><text fill="currentColor" y="9" dy="0.71em">26000</text></g>
+            <g class="tick" opacity="1" transform="translate(87.5,0)"><line stroke="currentColor" y2="6" y1="-10"></line><text fill="currentColor" y="9" dy="0.71em">39000</text></g>
+            <g class="tick" opacity="1" transform="translate(116.5,0)"><line stroke="currentColor" y2="6" y1="-10"></line><text fill="currentColor" y="9" dy="0.71em">52000</text></g>
+            <g class="tick" opacity="1" transform="translate(144.5,0)"><line stroke="currentColor" y2="6" y1="-10"></line><text fill="currentColor" y="9" dy="0.71em">65000</text></g>
+            <g class="tick" opacity="1" transform="translate(173.5,0)"><line stroke="currentColor" y2="6" y1="-10"></line><text fill="currentColor" y="9" dy="0.71em">78000</text></g>
+            <g class="tick" opacity="1" transform="translate(202.5,0)"><line stroke="currentColor" y2="6" y1="-10"></line><text fill="currentColor" y="9" dy="0.71em">91000</text></g>
+            <g class="tick" opacity="1" transform="translate(231.5,0)"><line stroke="currentColor" y2="6" y1="-10"></line><text fill="currentColor" y="9" dy="0.71em">104000</text></g>
+            <g class="tick" opacity="1" transform="translate(260.5,0)"><line stroke="currentColor" y2="6" y1="-10"></line><text fill="currentColor" y="9" dy="0.71em">117000</text></g>
+            <text id="legendHeading" x="0" y="-16" fill="currentColor" text-anchor="start" font-weight="bold">Population</text></g></svg></div>
+
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="lib/legend.js"></script>
 <script>
@@ -83,7 +102,7 @@ var projection = d3.geoMercator()
     .fitExtent([[20, 20], [980, 580]], data[0]);
 
 let geopath = d3.geoPath().projection(projection);
-let colorScale = d3.scaleQuantize([0, 130000], d3.schemeReds[7]);
+let colorScale = d3.scaleQuantize([0, 130000], d3.schemeBlues[9]);
     
     svg.append("g")
     .attr("id", "districts")
@@ -105,13 +124,19 @@ let colorScale = d3.scaleQuantize([0, 130000], d3.schemeReds[7]);
                         .style("left", (event.pageX) + "px")
                         .style("top", (event.pageY) + "px")
                          })
-                .on("mouseout", (event, d) => {
+        .on("mouseout", (event, d) => {
                         d3.select(event.currentTarget)
                         .style('stroke', "white")
                         .style('stroke-width', 0)
                         d3.select(".tooltip")
                         .text("");
                     });
+        legend({ 
+        color: colorScale, 
+        title: popType + " Population", 
+        width: 260,
+        tickFormat: ".0f"
+        });
     })
 
   
